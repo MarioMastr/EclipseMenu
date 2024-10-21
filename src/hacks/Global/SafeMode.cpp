@@ -30,7 +30,9 @@ namespace eclipse::hacks::Global {
             auto tab = gui::MenuTab::find("Global");
 
             config::setIfEmpty("global.autosafemode", true);
-            tab->addToggle("Auto Safe Mode", "global.autosafemode")->handleKeybinds();
+            tab->addToggle("Auto Safe Mode", "global.autosafemode")
+                ->handleKeybinds()
+                ->setDescription("Automatically enables safe mode if cheats are enabled");
         }
 
         void update() override {
@@ -76,7 +78,9 @@ namespace eclipse::hacks::Global {
             m_fields->totalJumps = GSM->getStat("1");
             m_fields->totalAttempts = GSM->getStat("2");
 
-            return PlayLayer::init(level, useReplay, dontCreateObjects);
+            if (!PlayLayer::init(level, useReplay, dontCreateObjects)) return false;
+
+            return true;
         }
 
         void destroyPlayer(PlayerObject* player, GameObject* object) {
